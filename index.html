@@ -1,10 +1,157 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EAP 測機實戰與核心思維筆記</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --border-color: #e2e8f0;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        h1 {
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+        .section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .section:last-child {
+            border-bottom: none;
+        }
+        h2 {
+            font-size: 18px;
+            color: #334155;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        h2 span {
+            background: var(--primary-color);
+            color: white;
+            width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        p, ul {
+            margin: 0 0 10px 0;
+            color: #475569;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .sub-list {
+            margin-top: 6px;
+            margin-bottom: 10px;
+        }
+        .highlight {
+            background: #eff6ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 8px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<div class="container">
+    <h1>🚀 EAP 自動化工程師：獨當一面測機指南與完整 SOP</h1>
+
+    <div class="section">
+        <h2><span>1</span>需要具備怎樣的能力？</h2>
+        <p>具備<strong>軟硬整合與邏輯排查</strong>的能力。包含 C# 程式撰寫與資料解析、看懂 PLC 通訊協定（如 MC Protocol、Modbus TCP）、理解暫存器點位與資料型態對應，並具備面對突發通訊中斷時的獨立除錯與抗壓能力。</p>
+    </div>
+
+    <div class="section">
+        <h2><span>2</span>和準備啥樣的工具？</h2>
+        <ul>
+            <li><strong>軟體與協議工具</strong>：EAP 主程式、通訊模擬器、C# 開發與 Log 追蹤工具。</li>
+            <li><strong>調試與對點工具</strong>：PLC 檢視軟體（如 GX Works，用來檢查暫存器數值）。</li>
+            <li><strong>參考文檔</strong>：Excel 測機規格書、PLC_Pattern.xml 通訊設定檔與事件觸發規範。</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><span>3</span>需要遵循怎樣的規範？</h2>
+        <p>必須遵循公司統一的 <strong>Common SPEC（共通通訊規範）</strong>。包含進站（MoveIn）、出站（MoveOut）、開機請求與人員上下機的標準資料交換格式，確保 EAP 與上層 MES 系統的資料流向正確不混亂。</p>
+    </div>
+
+    <div class="section">
+        <h2><span>4</span>測機技能是否熟練？</h2>
+        <p>經過海外實戰與架構沉澱，已能獨立操作從前置對點、心跳確認、到執行各項核心業務的完整測機流程。面對常見的資料型態不符或位址重疊問題，能透過 Log 與 XML 快速定位並解決。</p>
+    </div>
+
+    <div class="section">
+        <h2><span>5</span>你的測機 SOP 是甚麼？（完整實戰流程）</h2>
+        <ul>
+            <li><strong>Step 1：前置對點與規格確認</strong>
+                <ul class="sub-list">
+                    <li>準備好 Excel 測機規格書與 <code>PLC_Pattern.xml</code> 設定檔。</li>
+                    <li>確認雙方對於進出站（MoveIn/MoveOut）、開機請求、人員上下機的參數與狀態碼定義有一致共識。</li>
+                </ul>
+            </li>
+            <li><strong>Step 2：實體連線與心跳（Heartbeat）確認</strong>
+                <ul class="sub-list">
+                    <li>測試電腦與 PLC 之間的網路（TCP/IP）是否互通。</li>
+                    <li>啟動雙方心跳機制，確保數值持續遞增，代表底層通訊通道暢通、無斷線或當機。</li>
+                </ul>
+            </li>
+            <li><strong>Step 3：分階段功能模組測試</strong>
+                <ul class="sub-list">
+                    <li><strong>基礎狀態</strong>：測試機台狀態讀取與人員登錄/刷卡上機。</li>
+                    <li><strong>核心業務</strong>：實際測試產品進站、出站資料帶入、配方下發與參數集合比對。</li>
+                </ul>
+            </li>
+            <li><strong>Step 4：異常與防呆驗證</strong>
+                <ul class="sub-list">
+                    <li>測試不符合規範的資料（如空白字串、超長字體或錯誤型態），確認 EAP 端有做好例外攔截，不會造成程式崩潰（Crash）。</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2><span>6</span>廠商有疑難提問，你該怎麼引導和應對？</h2>
+        <p>秉持<strong>「對事不對人、以文件為依據」</strong>的原則：</p>
+        <div class="highlight">
+            當廠商反應收不到資料或測機卡住時，不互相推卸，而是帶著他們<strong>一步步做步驟化排查</strong>：先確認實體網路與心跳 ➔ 再確認 PLC 的 Trigger Bit 有沒有拉起來 ➔ 最後透過 PLC 軟體（如 GX Works）打開暫存器看資料長相。用共識文件（SPEC/XML）來釐清問題，把雙方目標一致化。
+        </div>
+    </div>
+
+</div>
+
 </body>
 </html>
